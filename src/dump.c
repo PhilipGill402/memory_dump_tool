@@ -4,7 +4,7 @@ void dump_memory(void* ptr, int size){
     const unsigned char* p = ptr;
     int curr_size = 0; 
     
-    printf("Address         Hexadecimal Values                               ASCII           \n");
+    printf("Address         Hexadecimal Values                                ASCII           \n");
     while (curr_size != size){
         //prints address 
         printf("%-16p", (void*)(p + curr_size));
@@ -19,16 +19,29 @@ void dump_memory(void* ptr, int size){
             printf("%02x ", (unsigned char)p[curr_size]);
             buffer[i] = (unsigned char)p[curr_size];
             curr_size++;
+            curr_bytes++;
+
+            if (i == 7){
+                printf(" ");
+            }
         }
-       
-        if (curr_size % 16 != 0){
-            int space = (16 - (curr_size % 16)) * 3;
-            printf("%*s", space, "");
-        } 
+        
+        int itrs;
+        //short line
+        if (curr_bytes != 16){
+            int spacing = 49 - (curr_bytes * 3);
+            //adds one to account for the added pad after 8 bytes 
+            if (curr_bytes < 8){
+                spacing++;
+            }
+            printf("%*s", spacing, "");
+            itrs = curr_bytes; 
+        } else {
+            printf(" "); 
+            itrs = 16;
+        }
 
         //prints ascii characters
-        int itrs = curr_size % 16 == 0 ? 16 : curr_size % 16;
-        printf(" ");
         for (int i = 0; i < itrs; i++){
             unsigned char c = buffer[i];
             putchar((c >= 32 && c <= 126) ? c : '.');
@@ -42,9 +55,9 @@ void dump_memory(void* ptr, int size){
 }
 
 int main(){
-    char str[] = "Hello World! So good to meet you!\n";
-    int integers[] = {1,2,3,4,5,6,7,8,9,10};
     
-    dump_memory(&integers, sizeof(integers));
+    char c[24] = "Hello World"; 
+    dump_memory(&c, sizeof(c));
+
     return 0;
 }
