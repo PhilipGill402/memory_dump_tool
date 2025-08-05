@@ -55,9 +55,5 @@ void dump_memory(void* ptr, int size){
 }
 
 int main(){
-    
-    char c[24] = "Hello World"; 
-    dump_memory(&c, sizeof(c));
-
     return 0;
 }
